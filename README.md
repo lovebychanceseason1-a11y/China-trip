@@ -1,1 +1,617 @@
-# China-trip
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My China Trip - 7 Days Memory (Imperial V16)</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Noto Sans Thai & Montserrat -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&family=Noto+Sans+Thai:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            font-family: 'Noto Sans Thai', 'Montserrat', sans-serif;
+            background-color: #f1ebd9;
+            background-image: radial-gradient(#f7f2e4 20%, transparent 20%), radial-gradient(#f7f2e4 20%, transparent 20%);
+            background-size: 8px 8px;
+            background-position: 0 0, 4px 4px;
+        }
+        .chinese-border-frame {
+            border: 4px double #b8860b;
+            outline: 2px solid #8b0000;
+            box-shadow: inset 0 0 20px rgba(139, 0, 0, 0.05);
+        }
+        .editor-content-area img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 0.75rem;
+            margin-top: 1rem;
+            margin-bottom: 1rem;
+            display: block;
+            border: 3px solid #dfd5be;
+        }
+        .glow-red {
+            box-shadow: 0 0 15px rgba(139, 0, 0, 0.15);
+        }
+    </style>
+</head>
+<body class="text-slate-800 antialiased min-h-screen flex flex-col justify-between p-1 sm:p-2">
+
+    <!-- กล่องหน้าต่างกรอกรหัสผ่าน -->
+    <div id="password-modal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-[100] hidden flex items-center justify-center p-4">
+        <div class="bg-[#faf6eb] border-4 border-[#b8860b] rounded-2xl p-6 w-full max-w-sm text-center shadow-2xl">
+            <span class="text-4xl mb-2 block">🔒</span>
+            <h3 class="text-lg font-black text-[#800000] mb-2">เข้าสู่ระบบแอดมิน (Editor)</h3>
+            <p class="text-xs text-slate-500 mb-4">กรุณากรอกรหัสผ่านเพื่อเข้าสู่หน้าแก้ไขข้อมูล</p>
+            <input type="password" id="admin-password-input" placeholder="กรอกรหัสผ่านที่นี่..." class="w-full p-2.5 border border-[#b8860b]/40 rounded-xl text-center text-sm outline-none bg-white focus:ring-2 focus:ring-red-200 mb-4">
+            <div class="flex gap-2">
+                <button onclick="closePasswordModal()" class="w-1/3 bg-slate-200 hover:bg-slate-300 text-slate-700 text-xs font-bold py-2 rounded-xl">ยกเลิก</button>
+                <button onclick="submitAdminPassword()" class="w-2/3 bg-[#800000] text-[#ffd700] border border-[#b8860b] text-xs font-bold py-2 rounded-xl shadow hover:bg-red-900 transition">ยืนยันรหัสผ่าน</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="chinese-border-frame bg-[#faf6eb]/95 rounded-2xl flex flex-col justify-between min-h-[calc(100vh-1rem)] overflow-hidden">
+        
+        <!-- NAVIGATION BAR -->
+        <nav class="bg-[#800000] border-b-4 border-[#b8860b] px-4 sm:px-6 py-4 shadow-lg">
+            <div class="max-w-6xl mx-auto flex justify-between items-center">
+                <a href="#" onclick="showPage('home')" class="text-lg sm:text-xl font-black tracking-wider text-[#ffd700] flex items-center gap-2">
+                    <span>🇨🇳</span> CHINA TRIP '7D
+                </a>
+                <div class="hidden md:flex space-x-6 text-sm font-bold text-[#f7f2e4]">
+                    <button onclick="showPage('diary')" class="hover:text-[#ffd700] transition">ไดอารี่ของฉัน</button>
+                    <button onclick="showPage('places')" class="hover:text-[#ffd700] transition">สถานที่ที่ไปมา</button>
+                    <button onclick="showPage('media')" class="hover:text-[#ffd700] transition">รูปภาพและวิดีโอ</button>
+                    <button onclick="showPage('about')" class="hover:text-[#ffd700] transition">ผู้สร้างเว็บไซต์</button>
+                    <button onclick="openPasswordModal()" class="text-[#ffd700] bg-[#a00000] border border-[#b8860b] px-3 py-1 rounded-full font-bold hover:bg-red-100/20 transition">⚙️ ส่วนแก้ไขข้อมูล (Editor)</button>
+                </div>
+                <div class="md:hidden">
+                    <button onclick="openPasswordModal()" class="text-xs text-[#ffd700] bg-[#a00000] border border-[#b8860b] px-2 py-1 rounded-full font-bold">⚙️ Editor</button>
+                </div>
+            </div>
+        </nav>
+
+        <!-- MAIN CONTENT CONTAINER -->
+        <main class="max-w-6xl mx-auto px-4 sm:px-6 py-8 flex-grow w-full">
+
+            <!-- 1. HOME PAGE -->
+            <section id="page-home" class="page-section flex flex-col items-center justify-center min-h-[65vh] text-center relative py-6">
+                <div class="absolute top-0 left-2 text-4xl sm:text-6xl hidden sm:block animate-pulse">🏮</div>
+                <div class="absolute top-0 right-2 text-4xl sm:text-6xl hidden sm:block animate-pulse">🏮</div>
+
+                <div class="mb-4">
+                    <span class="text-xs uppercase tracking-widest text-white bg-[#800000] border border-[#b8860b] px-4 py-1.5 rounded-full font-bold shadow-md">Educational Study Tour</span>
+                </div>
+                
+                <h1 class="text-2xl sm:text-4xl md:text-5xl font-black text-[#800000] tracking-tight mb-4 leading-tight">
+                    บันทึกการเดินทางและทัศนศึกษาตลอดเจ็ดวัน<br>
+                    <span class="text-3xl sm:text-5xl md:text-6xl font-black text-[#b8860b] block mt-2">ในประเทศจีนของนายโครินทร์ ทวีพิทักษ์</span>
+                </h1>
+                
+                <div class="w-32 h-1 bg-[#b8860b] mx-auto mb-10 rounded-full"></div>
+                
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 w-full max-w-3xl px-2">
+                    <button onclick="showPage('diary')" class="group p-5 bg-[#faf6eb] border-2 border-[#b8860b] rounded-2xl text-left hover:bg-[#fffdf7] hover:border-red-600 transition duration-300 flex items-center gap-4 shadow-sm glow-red">
+                        <div class="p-3 bg-[#800000] text-white text-3xl rounded-xl">📔</div>
+                        <div>
+                            <h3 class="font-black text-lg text-[#800000] group-hover:text-red-700 transition">ไดอารี่ของฉัน</h3>
+                            <p class="text-xs text-slate-500 font-light mt-0.5">บันทึกเรื่องราวและความประทับใจ Day 1 - Day 7</p>
+                        </div>
+                    </button>
+                    <button onclick="showPage('places')" class="group p-5 bg-[#faf6eb] border-2 border-[#b8860b] rounded-2xl text-left hover:bg-[#fffdf7] hover:border-red-600 transition duration-300 flex items-center gap-4 shadow-sm glow-red">
+                        <div class="p-3 bg-[#800000] text-white text-3xl rounded-xl">📍</div>
+                        <div>
+                            <h3 class="font-black text-lg text-[#800000] group-hover:text-red-700 transition">สถานที่ที่ไปมา</h3>
+                            <p class="text-xs text-slate-500 font-light mt-0.5">เจาะลึกแลนด์มาร์กเด็ดประจำเมือง</p>
+                        </div>
+                    </button>
+                    <button onclick="showPage('media')" class="group p-5 bg-[#faf6eb] border-2 border-[#b8860b] rounded-2xl text-left hover:bg-[#fffdf7] hover:border-red-600 transition duration-300 flex items-center gap-4 shadow-sm glow-red">
+                        <div class="p-3 bg-[#800000] text-white text-3xl rounded-xl">📸</div>
+                        <div>
+                            <h3 class="font-black text-lg text-[#800000] group-hover:text-red-700 transition">รูปภาพและวิดีโอ</h3>
+                            <p class="text-xs text-slate-500 font-light mt-0.5">คลังโฟลเดอร์บันทึกทุกความทรงจำ</p>
+                        </div>
+                    </button>
+                    <button onclick="showPage('about')" class="group p-5 bg-[#faf6eb] border-2 border-[#b8860b] rounded-2xl text-left hover:bg-[#fffdf7] hover:border-red-600 transition duration-300 flex items-center gap-4 shadow-sm glow-red">
+                        <div class="p-3 bg-[#800000] text-white text-3xl rounded-xl">👨‍💻</div>
+                        <div>
+                            <h3 class="font-black text-lg text-[#800000] group-hover:text-red-700 transition">รู้จักกับผู้สร้าง</h3>
+                            <p class="text-xs text-slate-500 font-light mt-0.5">ข้อมูลโปรไฟล์ ช่องทางการติดต่อผู้พัฒนา</p>
+                        </div>
+                    </button>
+                </div>
+            </section>
+
+            <!-- 1.1 DIARY PAGE (ปรับปรุงปุ่มให้โหลดข้อความสั้นด้านล่างแบบไดนามิกขยับตาม Editor) -->
+            <section id="page-diary" class="page-section hidden">
+                <div class="mb-6">
+                    <button onclick="showPage('home')" class="text-xs text-slate-500 hover:text-red-700 mb-2 inline-block">← กลับหน้าแรก</button>
+                    <h2 class="text-2xl sm:text-3xl font-black text-[#800000]">ไดอารี่ของฉัน <span class="text-red-600 text-lg sm:text-xl font-normal">(7 วัน)</span></h2>
+                </div>
+                <!-- แถวปุ่มที่จะถูกเรนเดอร์ข้อความสั้นใต้ปุ่มด้วยคำสั่ง JavaScript ซิสเต็ม -->
+                <div id="diary-buttons-row" class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-2.5 mb-8">
+                    <!-- รายชื่อปุ่ม Day 1-7 จะมาฉายโชว์ที่นี่พร้อมข้อความสั้นที่คุณทูต้าแก้ไขล่าสุด -->
+                </div>
+                <div id="diary-content" class="bg-[#fcfaf2] border-2 border-[#b8860b] rounded-2xl p-6 sm:p-8 shadow-inner text-center text-slate-400 min-h-[320px] flex flex-col justify-center items-center">
+                    <p>💡 กรุณาเลือก "Day" ด้านบนเพื่ออ่านบันทึกความทรงจำและภาพประกอบการทัศนศึกษา</p>
+                </div>
+            </section>
+
+            <!-- 1.2 PLACES PAGE -->
+            <section id="page-places" class="page-section hidden">
+                <div class="mb-6">
+                    <button onclick="showPage('home')" class="text-xs text-slate-500 hover:text-red-700 mb-2 inline-block">← กลับหน้าแรก</button>
+                    <h2 class="text-2xl sm:text-3xl font-black text-[#800000] mb-1">สถานที่ที่ไปมา</h2>
+                    <p class="text-slate-500 text-xs">จิ้มเลือกภูมิภาคทางขวา เพื่อเปิดดูรายละเอียดสถานที่และรูปภาพไฮไลท์ประจำเมือง</p>
+                </div>
+                
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
+                    <div class="lg:col-span-2 bg-[#fcfaf2] border-2 border-[#b8860b] rounded-2xl p-5 shadow-sm min-h-[350px] flex flex-col justify-center relative overflow-hidden">
+                        <div class="absolute bottom-2 right-4 opacity-5 text-7xl select-none">🏯</div>
+                        <div id="place-info-box" class="w-full h-full flex flex-col justify-center space-y-4">
+                            <p class="text-center text-slate-400 font-light text-sm">💡 กรุณาจิ้มเลือกชื่อเมืองทางด้านขวา เพื่อเปิดอ่านรายละเอียดข้อความและรูปภาพสถานที่ที่คุณทูต้าได้ไปมาครับ</p>
+                        </div>
+                    </div>
+                    
+                    <div class="space-y-3">
+                        <div onclick="selectPlace('shanghai')" class="cursor-pointer bg-[#fcfaf2] border-2 border-[#b8860b]/30 rounded-xl p-5 hover:border-red-600 hover:bg-[#fffdf7] transition shadow-sm" id="zone-shanghai">
+                            <h3 class="font-black text-[#800000] text-base mb-1 flex justify-between items-center">
+                                <span>🔴 เซี่ยงไฮ้ (Shanghai)</span>
+                                <span class="text-xs text-[#b8860b] font-bold">เปิดดูข้อมูล →</span>
+                            </h3>
+                            <p class="text-[11px] text-slate-500 font-light">เมืองท่าทางเศรษฐกิจ นวัตกรรม และความทันสมัยระดับโลก</p>
+                        </div>
+                        <div onclick="selectPlace('hangzhou')" class="cursor-pointer bg-[#fcfaf2] border-2 border-[#b8860b]/30 rounded-xl p-5 hover:border-red-600 hover:bg-[#fffdf7] transition shadow-sm" id="zone-hangzhou">
+                            <h3 class="font-black text-[#800000] text-base mb-1 flex justify-between items-center">
+                                <span>🔴 หางโจว (Hangzhou)</span>
+                                <span class="text-xs text-[#b8860b] font-bold">เปิดดูข้อมูล →</span>
+                            </h3>
+                            <p class="text-[11px] text-slate-500 font-light">เมืองหลวงแห่งเทคโนโลยี ไอที วัฒนธรรม และระบบ AI</p>
+                        </div>
+                        <div onclick="selectPlace('yunnan')" class="cursor-pointer bg-[#fcfaf2] border-2 border-[#b8860b]/30 rounded-xl p-5 hover:border-red-600 hover:bg-[#fffdf7] transition shadow-sm" id="zone-yunnan">
+                            <h3 class="font-black text-[#800000] text-base mb-1 flex justify-between items-center">
+                                <span>🔴 ยูนนาน (Yunnan)</span>
+                                <span class="text-xs text-[#b8860b] font-bold">เปิดดูข้อมูล →</span>
+                            </h3>
+                            <p class="text-[11px] text-slate-500 font-light">มณฑลแห่งประวัติศาสตร์ คณะครุศาสตร์ และสถาปัตยกรรมมินิมอล</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 1.3 MEDIA PAGE -->
+            <section id="page-media" class="page-section hidden">
+                <div class="mb-6">
+                    <button onclick="showPage('home')" class="text-xs text-slate-500 hover:text-red-700 mb-2 inline-block">← กลับหน้าแรก</button>
+                    <h2 class="text-2xl sm:text-3xl font-black text-[#800000]">รูปภาพและวิดีโอ</h2>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="bg-[#fcfaf2] border-2 border-[#b8860b] rounded-2xl p-5 shadow-sm">
+                        <div class="flex items-center gap-2 mb-4 pb-2 border-b border-slate-200">
+                            <span class="text-xl">📁</span>
+                            <h3 class="font-black text-base text-[#800000]">โฟลเดอร์: รูปภาพประทับใจ</h3>
+                        </div>
+                        <div id="media-images-container" class="grid grid-cols-2 gap-3"></div>
+                    </div>
+                    <div class="bg-[#fcfaf2] border-2 border-[#b8860b] rounded-2xl p-5 shadow-sm">
+                        <div class="flex items-center gap-2 mb-4 pb-2 border-b border-slate-200">
+                            <span class="text-xl">🎞️</span>
+                            <h3 class="font-black text-base text-[#800000]">โฟลเดอร์: วิดีโอ</h3>
+                        </div>
+                        <div id="media-video-container" class="w-full space-y-4"></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 1.4 ABOUT PAGE -->
+            <section id="page-about" class="page-section hidden">
+                <div class="mb-6">
+                    <button onclick="showPage('home')" class="text-xs text-slate-500 hover:text-red-700 mb-2 inline-block">← กลับหน้าแรก</button>
+                    <h2 class="text-2xl sm:text-3xl font-black text-[#800000]">รู้จักกับผู้สร้างเว็บไซต์</h2>
+                </div>
+                <div class="max-w-md mx-auto bg-[#fcfaf2] border-2 border-[#b8860b] rounded-3xl p-6 sm:p-8 text-center shadow-md">
+                    <div id="about-avatar" class="w-32 h-32 bg-slate-200 rounded-full mx-auto mb-4 flex items-center justify-center border-4 border-[#b8860b] overflow-hidden"></div>
+                    <h3 id="about-name" class="text-xl font-black text-slate-900 mb-0.5">กรินทร์ ทวีพิทักษ์ (ทูต้า)</h3>
+                    <p id="about-bio" class="text-xs text-red-700 font-bold mb-4">นักศึกษาคณะครุศาสตร์ มหาวิทยาลัยเชียงใหม่</p>
+                    <div class="space-y-2 text-left text-xs">
+                        <div class="flex justify-between p-2.5 bg-[#f7f2e4] rounded-lg border border-[#b8860b]/20"><span class="text-slate-500 font-bold">📧 Email:</span><span id="about-email" class="text-slate-700 font-mono">-</span></div>
+                        <div class="flex justify-between p-2.5 bg-[#f7f2e4] rounded-lg border border-[#b8860b]/20"><span class="text-slate-500 font-bold">📸 Instagram:</span><span id="about-ig" class="text-slate-700 font-mono">-</span></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 1.5 EDITOR PAGE (เพิ่มช่องปรับแต่งข้อความสั้นใต้ปุ่มในหมวดที่ 2) -->
+            <section id="page-editor" class="page-section hidden">
+                <div class="mb-6 flex justify-between items-center border-b border-[#b8860b]/30 pb-4">
+                    <div>
+                        <h2 class="text-2xl font-black text-[#800000]">⚙️ หน้าต่างแก้ไขข้อมูล (Website Editor)</h2>
+                        <p class="text-slate-500 text-xs">ระบบดึงภาพด่วน Instant Upload ไม่ค้างชัวร์ 100%</p>
+                    </div>
+                    <button onclick="logoutEditor()" class="bg-[#800000] text-white text-xs font-bold px-3 py-1.5 rounded-lg border border-[#b8860b]">🔒 ออกจากระบบ</button>
+                </div>
+
+                <div class="space-y-6 text-xs sm:text-sm">
+                    <!-- 1. แก้ไขข้อมูลส่วนตัว -->
+                    <div class="bg-white border border-[#b8860b]/40 rounded-xl p-5 shadow-sm">
+                        <h3 class="font-black text-sm mb-3 text-red-700 border-b pb-1.5">1. แก้ไขข้อมูลผู้สร้างเว็บไซต์</h3>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+                            <div><label class="block text-[11px] font-bold text-slate-500 mb-1">ชื่อ - นามสกุล</label><input type="text" id="edit-name" class="w-full p-2 border rounded-lg outline-none bg-[#fffdfa]"></div>
+                            <div><label class="block text-[11px] font-bold text-slate-500 mb-1">ประวัติย่อ</label><input type="text" id="edit-bio" class="w-full p-2 border rounded-lg outline-none bg-[#fffdfa]"></div>
+                            <div><label class="block text-[11px] font-bold text-slate-500 mb-1">อีเมลติดต่อ</label><input type="text" id="edit-email" class="w-full p-2 border rounded-lg outline-none bg-[#fffdfa]"></div>
+                            <div><label class="block text-[11px] font-bold text-slate-500 mb-1">Instagram</label><input type="text" id="edit-ig" class="w-full p-2 border rounded-lg outline-none bg-[#fffdfa]"></div>
+                            <div class="sm:col-span-2">
+                                <label class="block text-[11px] font-bold text-slate-500 mb-1">อัปเดตรูปโปรไฟล์ในเครื่อง</label>
+                                <input type="file" accept="image/*" onchange="handleDirectUpload(this, 'avatar')" class="file:py-1.5 file:px-3 file:rounded-full file:border-0 file:bg-red-50 file:text-red-700 file:font-bold">
+                                <input type="hidden" id="edit-avatar-url">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 2. แก้ไขไดอารี่รายวัน & ข้อความใต้ปุ่มประจำวัน (เพิ่มช่องกรอกซับไตเติล) -->
+                    <div class="bg-white border border-[#b8860b]/40 rounded-xl p-5 shadow-sm">
+                        <h3 class="font-black text-sm mb-3 text-red-700 border-b pb-1.5">2. แก้ไขไดอารี่รายวัน & ข้อความย่อใต้ปุ่มวันประจำสัปดาห์</h3>
+                        <div class="mb-3">
+                            <label class="block text-[11px] font-bold text-slate-500 mb-1">เลือกวันที่ต้องการอัปเดต</label>
+                            <select id="edit-diary-day" onchange="loadDiaryToEditor()" class="p-2 border rounded-lg bg-white outline-none">
+                                <option value="1">Day 1</option><option value="2">Day 2</option><option value="3">Day 3</option><option value="4">Day 4</option><option value="5">Day 5</option><option value="6">Day 6</option><option value="7">Day 7</option>
+                            </select>
+                        </div>
+                        <div class="space-y-3">
+                            <div>
+                                <label class="block text-[11px] font-bold text-slate-500 mb-1">หัวข้อไดอารี่ประจำวัน (ตัวหนาด้านในเนื้อหา)</label>
+                                <input type="text" id="edit-diary-title" class="w-full p-2 border rounded-lg outline-none bg-[#fffdfa]">
+                            </div>
+                            <div>
+                                <label class="block text-[11px] font-bold text-slate-500 mb-1">✏️ ข้อความย่อใต้ปุ่มวัน (ตัวหนังสือเล็ก ๆ ด้านล่างปุ่ม Day บนหน้าเว็บ)</label>
+                                <input type="text" id="edit-diary-subtitle" class="w-full p-2 border rounded-lg outline-none bg-[#fffdfa] placeholder="กรอกข้อความสั้น เช่น เดินทางสู่เซี่ยงไฮ้...">
+                            </div>
+                            <div>
+                                <div class="mb-2 p-2 bg-slate-50 border rounded-lg flex items-center gap-2">
+                                    <span class="text-[11px] font-bold text-slate-500">🖼️ เลือกรูปในเครื่องแทรกระหว่างแถวบรรทัดเนื้อหา:</span>
+                                    <input type="file" accept="image/*" multiple onchange="handleDirectUpload(this, 'diary')" class="text-xs file:py-0.5 file:px-2 file:bg-white file:border file:rounded file:border-slate-300 ml-2">
+                                </div>
+                                <div id="edit-diary-rich-text" contenteditable="true" class="w-full min-h-[220px] p-3 border rounded-lg bg-white text-sm outline-none overflow-y-auto editor-content-area"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 3. เพิ่มมีเดียรูปภาพและวิดีโอ -->
+                    <div class="bg-white border border-[#b8860b]/40 rounded-xl p-5 shadow-sm">
+                        <h3 class="font-black text-sm mb-3 text-red-700 border-b pb-1.5">3. เพิ่มมีเดียเข้าโฟลเดอร์รูปภาพและวิดีโอ</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-[11px] font-bold text-slate-500 mb-1">📸 เลือกอัปโหลดรูปภาพทริปจีนจากเครื่อง iPad (เลือกได้ทีละหลายรูปพร้อมกัน):</label>
+                                <input type="file" id="upload-media-images" accept="image/*" multiple onchange="handleDirectUpload(this, 'gallery')" class="file:bg-red-50 file:text-red-700 file:rounded-full file:px-3 file:py-1.5 file:border-0 text-xs w-full">
+                                <span id="status-gallery" class="text-[11px] text-emerald-600 font-bold block mt-1.5"></span>
+                            </div>
+                            <div>
+                                <label class="block text-[11px] font-bold text-slate-500 mb-1">📹 เลือกอัปโหลดไฟล์วิดีโอทริปจีนจากเครื่อง iPad:</label>
+                                <input type="file" id="upload-media-video" accept="video/*" onchange="handleDirectUpload(this, 'video')" class="file:bg-red-50 file:text-red-700 file:rounded-full file:px-3 file:py-1.5 file:border-0 text-xs w-full">
+                                <span id="status-video" class="text-[11px] text-emerald-600 font-bold block mt-1.5"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 4. แก้ไขรายละเอียดเมืองและรูปภาพไฮไลท์ประจำสถานที่ -->
+                    <div class="bg-white border border-[#b8860b]/40 rounded-xl p-5 shadow-sm">
+                        <h3 class="font-black text-sm mb-3 text-red-700 border-b pb-1.5">4. แก้ไขรายละเอียดและรูปภาพไฮไลท์ประจำเมือง (เซี่ยงไฮ้ / หางโจว / ยูนนาน)</h3>
+                        <div class="mb-3">
+                            <label class="block text-[11px] font-bold text-slate-500 mb-1">เลือกเมืองที่ต้องการแก้ไขข้อมูล:</label>
+                            <select id="edit-city-select" onchange="loadPlacesToEditor()" class="p-2 border rounded-lg bg-white outline-none text-xs">
+                                <option value="shanghai">เซี่ยงไฮ้ (Shanghai)</option>
+                                <option value="hangzhou">หางโจว (Hangzhou)</option>
+                                <option value="yunnan">ยูนนาน (Yunnan)</option>
+                            </select>
+                        </div>
+                        <div class="space-y-3">
+                            <div>
+                                <label class="block text-[11px] font-bold text-slate-500 mb-1">หัวข้อเมืองแสดงผล</label>
+                                <input type="text" id="edit-city-title" class="w-full p-2 border rounded-lg outline-none text-xs bg-[#fffdfa]">
+                            </div>
+                            <div>
+                                <label class="block text-[11px] font-bold text-slate-500 mb-1">🖼️ อัปโหลดรูปภาพไฮไลท์ประจำเมืองนี้จากเครื่อง iPad (สถานที่ละ 1 รูปเท่านั้น):</label>
+                                <input type="file" accept="image/*" onchange="handleDirectUpload(this, 'city-image')" class="file:py-1 file:px-2 file:bg-red-50 file:text-red-700 file:font-bold file:rounded file:border-0 text-xs w-full mt-1">
+                                <input type="hidden" id="edit-city-image-url">
+                            </div>
+                            <div>
+                                <label class="block text-[11px] font-bold text-slate-500 mb-1">รายละเอียดสถานที่และคำอธิบายข้อมูลดูงาน</label>
+                                <textarea id="edit-city-desc" rows="4" class="w-full p-2 border rounded-lg outline-none text-xs bg-[#fffdfa]"></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="text-center pt-2">
+                        <button onclick="saveAllChanges()" class="bg-[#800000] text-[#ffd700] font-bold border-2 border-[#b8860b] px-8 py-2.5 rounded-xl shadow transition transform active:scale-95">
+                            💾 บันทึกการแก้ไขข้อมูลทั้งหมดไปยังหน้าเว็บ
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+
+        <!-- FOOTER -->
+        <footer class="bg-[#800000] border-t-4 border-[#b8860b] py-4 text-center text-xs text-[#ffd700]/80 font-medium">
+            <p>© 2026 สร้างขึ้นสำหรับการศึกษาเท่านั้น ใช้งานได้ดีที่สุดบนหน้าจอ iPad.</p>
+        </footer>
+
+    </div>
+
+    <!-- JAVASCRIPT SYSTEM LOGIC V16 -->
+    <script>
+        let isAdminAuthenticated = false;
+
+        let appData = JSON.parse(localStorage.getItem('china_trip_advanced_data')) || {
+            profile: { name: "กรินทร์ ทวีพิทักษ์ (ทูต้า)", bio: "นักศึกษาคณะครุศาสตร์ มหาวิทยาลัยเชียงใหม่", email: "korin.t@cmu.ac.th", ig: "@tuta_korin", avatar: "" },
+            media: { images: [], videos: [] },
+            diary: {
+                1: { title: "Day 1: เดินทางจากเชียงใหม่สู่เซี่ยงไฮ้", subtitle: "เดินทางสู่เซี่ยงไฮ้", html: "เริ่มเดินทางวันแรก..." },
+                2: { title: "Day 2: เจาะลึกฐานนวัตกรรม AI หางโจว", subtitle: "นวัตกรรม AI หางโจว", html: "เข้าชมฐานนวัตกรรม..." },
+                3: { title: "Day 3: ดูงานโรงเรียนประถมไอที", subtitle: "โรงเรียนประถมไอที", html: "เปิดโลกการเรียนรู้..." },
+                4: { title: "Day 4: ล่องเรือผ่อนคลายริมทะเลสาบซีหู", subtitle: "ทะเลสาบซีหู", html: "ผ่อนคลายสมอง..." },
+                5: { title: "Day 5: ซานโตรินีจีนสุดคลีน", subtitle: "ซานโตรินีจีน", html: "เดินทางเข้าสู่มณฑลยูนนาน..." },
+                6: { title: "Day 6: ย้อนเวลาเมืองโบราณต้าหลี่", subtitle: "เมืองโบราณต้าหลี่", html: "สัมผัสวัฒนธรรม..." },
+                7: { title: "Day 7: สวนกุยหู & วัดหยวนทง", subtitle: "สวนกุยหู & วัดหยวนทง", html: "วันสุดท้ายเข้าไปพักผ่อน..." }
+            }
+        };
+
+        const defaultPlacesText = {
+            shanghai: { title: "🔴 เมืองเซี่ยงไฮ้ (Shanghai) - ย่านเดอะบันด์", image: "", desc: "• <b>The Bund (หาดไว่ทาน):</b> ย่านทัศนศึกษาแลนด์มาร์กสำคัญริมแม่น้ำหวงผู่..." },
+            hangzhou: { title: "🔴 เมืองหางโจว (Hangzhou) - นวัตกรรมและธรรมชาติ", image: "", desc: "• <b>National pilot base for embodied intelligence applications:</b>..." },
+            yunnan: { title: "🔴 มณฑลยูนนาน (Yunnan) - วัฒนธรรมและการศึกษา", image: "", desc: "• <b>ซานโตรินีจีน (Dali Santorini):</b>..." }
+        };
+
+        if (!appData.places) appData.places = defaultPlacesText;
+        if (!appData.media) appData.media = { images: [], videos: [] };
+        
+        // ตรวจเช็คหากฐานข้อมูลเวอร์ชันเก่าไม่มีตัวแปรซับไตเติลปุ่ม ให้สร้างเผื่อไว้
+        const defaultSubtitles = ["เดินทางสู่เซี่ยงไฮ้", "นวัตกรรม AI หางโจว", "โรงเรียนประถมไอที", "ทะเลสาบซีหู", "ซานโตรินีจีน", "เมืองโบราณต้าหลี่", "สวนกุยหู & วัดหยวนทง"];
+        for(let i=1; i<=7; i++) {
+            if(!appData.diary[i].subtitle) appData.diary[i].subtitle = defaultSubtitles[i-1];
+        }
+
+        function renderDiaryButtons() {
+            const btnContainer = document.getElementById('diary-buttons-row');
+            if(!btnContainer) return;
+            btnContainer.innerHTML = '';
+            for(let i=1; i<=7; i++) {
+                const dayData = appData.diary[i];
+                btnContainer.innerHTML += `
+                    <button onclick="openDiary(${i})" class="p-3.5 bg-[#faf6eb] border border-[#b8860b]/40 rounded-xl hover:border-red-600 text-center transition flex flex-col justify-center items-center shadow-sm" id="btn-day-${i}">
+                        <span class="font-black text-base text-[#800000] mb-0.5">Day ${i}</span>
+                        <span class="text-[10px] text-slate-500 font-light leading-tight">${dayData.subtitle}</span>
+                    </button>
+                `;
+            }
+        }
+
+        function initApp() {
+            // โหลดหน้าโปรไฟล์ผู้สร้าง
+            if (appData.profile.avatar) {
+                document.getElementById('about-avatar').innerHTML = `<img src="${appData.profile.avatar}" class="w-full h-full object-cover">`;
+            } else {
+                document.getElementById('about-avatar').innerHTML = `<span class="text-slate-400 text-2xl">👤</span>`;
+            }
+            document.getElementById('about-name').innerText = appData.profile.name;
+            document.getElementById('about-bio').innerText = appData.profile.bio;
+            document.getElementById('about-email').innerText = appData.profile.email;
+            document.getElementById('about-ig').innerText = appData.profile.ig;
+
+            document.getElementById('edit-name').value = appData.profile.name;
+            document.getElementById('edit-bio').value = appData.profile.bio;
+            document.getElementById('edit-email').value = appData.profile.email;
+            document.getElementById('edit-ig').value = appData.profile.ig;
+            document.getElementById('edit-avatar-url').value = appData.profile.avatar;
+
+            // โหลดข้อมูลคลังรูปภาพมีเดีย
+            const imgContainer = document.getElementById('media-images-container');
+            if (imgContainer) {
+                imgContainer.innerHTML = '';
+                if (appData.media.images.length === 0) {
+                    imgContainer.innerHTML = `<div class="col-span-2 py-12 text-center text-slate-400 text-xs">ยังไม่มีรูปภาพในโฟลเดอร์คลังภาพ</div>`;
+                } else {
+                    appData.media.images.forEach((url, index) => {
+                        imgContainer.innerHTML += `
+                            <div class="aspect-square bg-slate-50 rounded-xl overflow-hidden border-2 border-[#b8860b]/20 relative group">
+                                <img src="${url}" class="w-full h-full object-cover">
+                                <button onclick="deleteImage(${index}, 'gallery')" class="absolute top-1 right-1 bg-red-600 text-white text-[9px] font-bold px-1.5 py-0.5 rounded shadow admin-only">ลบ</button>
+                            </div>`;
+                    });
+                }
+            }
+
+            // โหลดข้อมูลคลังวิดีโอมีเดีย
+            const videoContainer = document.getElementById('media-video-container');
+            if (videoContainer) {
+                videoContainer.innerHTML = '';
+                if (appData.media.videos.length === 0) {
+                    videoContainer.innerHTML = `<div class="py-12 text-center text-slate-400 text-xs">ยังไม่มีวิดีโอในโฟลเดอร์คลังวิดีโอ</div>`;
+                } else {
+                    appData.media.videos.forEach((url, index) => {
+                        videoContainer.innerHTML += `
+                            <div class="relative group mb-3">
+                                <video controls class="w-full rounded-xl border-2 border-[#b8860b]/30 bg-black"><source src="${url}" type="video/mp4"></video>
+                                <button onclick="deleteImage(${index}, 'video')" class="absolute top-2 right-2 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded shadow admin-only">ลบวิดีโอนี้</button>
+                            </div>`;
+                    });
+                }
+            }
+
+            renderDiaryButtons();
+            loadDiaryToEditor();
+            loadPlacesToEditor();
+            updateAdminUI();
+        }
+
+        function loadPlacesToEditor() {
+            const selectEl = document.getElementById('edit-city-select');
+            if(!selectEl) return;
+            const currentCity = selectEl.value;
+            const cityData = appData.places[currentCity];
+            document.getElementById('edit-city-title').value = cityData.title;
+            document.getElementById('edit-city-desc').value = cityData.desc;
+            document.getElementById('edit-city-image-url').value = cityData.image || "";
+        }
+
+        function selectPlace(zone) {
+            ['shanghai', 'hangzhou', 'yunnan'].forEach(z => {
+                const zDiv = document.getElementById(`zone-${z}`);
+                if(zDiv) zDiv.classList.remove('border-red-600', 'bg-red-50/40');
+            });
+            const azDiv = document.getElementById(`zone-${zone}`);
+            if(azDiv) azDiv.classList.add('border-red-600', 'bg-red-50/40');
+
+            const infoBox = document.getElementById('place-info-box');
+            if (infoBox) {
+                const info = appData.places[zone];
+                let imageHtml = "";
+                if (info.image && info.image !== "") {
+                    imageHtml = `<div class="w-full h-44 sm:h-56 bg-slate-100 rounded-xl overflow-hidden border-2 border-[#b8860b]/20 mb-3 shadow-sm"><img src="${info.image}" class="w-full h-full object-cover"></div>`;
+                }
+                infoBox.className = "w-full h-full text-left block animate-fade-in";
+                infoBox.innerHTML = `${imageHtml}<h4 class="font-black text-sm text-[#800000] mb-2 border-b border-[#b8860b]/25 pb-1">${info.title}</h4><p class="text-[11px] text-slate-700 leading-relaxed font-light">${info.desc}</p>`;
+            }
+        }
+
+        function handleDirectUpload(input, type) {
+            const files = input.files;
+            if (!files.length) return;
+
+            if (type === 'avatar') {
+                appData.profile.avatar = URL.createObjectURL(files[0]);
+                document.getElementById('edit-avatar-url').value = appData.profile.avatar;
+                alert("👤 เลือกรูปภาพโปรไฟล์ใหม่เรียบร้อยแล้ว!");
+            } 
+            else if (type === 'city-image') {
+                document.getElementById('edit-city-image-url').value = URL.createObjectURL(files[0]);
+                alert(`🖼️ เลือกรูปไฮไลท์เมืองสำเร็จ! (อย่าลืมกดปุ่มบันทึกสีแดงด้านล่างสุดนะครับ)`);
+            }
+            else if (type === 'diary') {
+                const editor = document.getElementById('edit-diary-rich-text');
+                editor.focus();
+                Array.from(files).forEach(file => {
+                    const imgHtml = `<img src="${URL.createObjectURL(file)}" class="my-4 max-w-full rounded-xl shadow-md border-2 border-[#b8860b]/20"><div><br></div>`;
+                    document.execCommand('insertHTML', false, imgHtml);
+                });
+                input.value = '';
+            } 
+            else if (type === 'gallery') {
+                const status = document.getElementById('status-gallery');
+                Array.from(files).forEach(file => { appData.media.images.push(URL.createObjectURL(file)); });
+                if(status) status.innerText = `✅ ดึงรูปเข้าคลังสำเร็จ ${files.length} รูป! (อย่าลืมกดปุ่มบันทึกด้านล่างนะครับ)`;
+                initApp();
+                input.value = '';
+            }
+            else if (type === 'video') {
+                const status = document.getElementById('status-video');
+                appData.media.videos.push(URL.createObjectURL(files[0]));
+                if(status) status.innerText = "✅ ดึงวิดีโอเข้าคลังสำเร็จ! (อย่าลืมกดปุ่มบันทึกด้านล่างนะครับ)";
+                initApp();
+                input.value = '';
+            }
+        }
+
+        function deleteImage(index, type) {
+            if(confirm("ต้องการลบไฟล์คลังมีเดียชิ้นนี้ใช่ไหม?")) {
+                if(type === 'gallery') appData.media.images.splice(index, 1);
+                if(type === 'video') appData.media.videos.splice(index, 1);
+                localStorage.setItem('china_trip_advanced_data', JSON.stringify(appData));
+                initApp();
+            }
+        }
+
+        function openPasswordModal() {
+            if (isAdminAuthenticated) { showPage('editor'); } 
+            else { document.getElementById('admin-password-input').value = ''; document.getElementById('password-modal').classList.remove('hidden'); }
+        }
+        function closePasswordModal() { document.getElementById('password-modal').classList.add('hidden'); }
+        function submitAdminPassword() {
+            if (document.getElementById('admin-password-input').value === "Tuta123") {
+                isAdminAuthenticated = true; closePasswordModal(); showPage('editor');
+            } else { alert("❌ รหัสผ่านไม่ถูกต้อง!"); }
+        }
+        function logoutEditor() { isAdminAuthenticated = false; alert("🔒 ออกจากระบบแอดมินแล้ว"); showPage('home'); }
+
+        function loadDiaryToEditor() {
+            const currentDay = document.getElementById('edit-diary-day').value;
+            const diary = appData.diary[currentDay];
+            document.getElementById('edit-diary-title').value = diary.title;
+            document.getElementById('edit-diary-rich-text').innerHTML = diary.html;
+            document.getElementById('edit-diary-subtitle').value = diary.subtitle || "";
+        }
+
+        function saveAllChanges() {
+            if (!isAdminAuthenticated) return;
+            
+            // บันทึกโปรไฟล์
+            appData.profile.name = document.getElementById('edit-name').value;
+            appData.profile.bio = document.getElementById('edit-bio').value;
+            appData.profile.email = document.getElementById('edit-email').value;
+            appData.profile.ig = document.getElementById('edit-ig').value;
+            const avatarUrl = document.getElementById('edit-avatar-url').value;
+            if(avatarUrl) appData.profile.avatar = avatarUrl;
+
+            // บันทึกเนื้อหาไดอารี่ & คำอธิบายสั้นใต้ปุ่มประจำวัน
+            const currentDay = document.getElementById('edit-diary-day').value;
+            appData.diary[currentDay].title = document.getElementById('edit-diary-title').value;
+            appData.diary[currentDay].html = document.getElementById('edit-diary-rich-text').innerHTML;
+            appData.diary[currentDay].subtitle = document.getElementById('edit-diary-subtitle').value;
+            
+            // บันทึกข้อมูลเมือง
+            const selectEl = document.getElementById('edit-city-select');
+            if(selectEl) {
+                const currentCity = selectEl.value;
+                appData.places[currentCity].title = document.getElementById('edit-city-title').value;
+                appData.places[currentCity].desc = document.getElementById('edit-city-desc').value;
+                appData.places[currentCity].image = document.getElementById('edit-city-image-url').value;
+            }
+
+            localStorage.setItem('china_trip_advanced_data', JSON.stringify(appData));
+            alert('🎉 บันทึกการอัปเดตคำอธิบายใต้ปุ่มประจำวันและไดอารี่สำเร็จเรียบร้อยแล้วครับ!');
+            initApp();
+        }
+
+        function updateAdminUI() {
+            document.querySelectorAll('.admin-only').forEach(el => {
+                el.style.display = isAdminAuthenticated ? 'block' : 'none';
+            });
+        }
+
+        function showPage(pageId) {
+            document.querySelectorAll('.page-section').forEach(section => section.classList.add('hidden'));
+            document.getElementById(`page-${pageId}`).classList.remove('hidden');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            if(pageId === 'places') selectPlace('shanghai');
+            if(pageId === 'diary') renderDiaryButtons(); // อัปเดตการเรนเดอร์คำอธิบายใต้ปุ่มวันด่วน
+            updateAdminUI();
+        }
+
+        function openDiary(dayNum) {
+            for(let i=1; i<=7; i++) {
+                const btn = document.getElementById(`btn-day-${i}`);
+                if(btn) btn.classList.remove('border-red-600', 'bg-red-50/60', 'text-red-700');
+                const subText = btn ? btn.querySelector('span:last-child') : null;
+                if(subText) subText.classList.replace('text-red-500', 'text-slate-500');
+            }
+            const activeBtn = document.getElementById(`btn-day-${dayNum}`);
+            if(activeBtn) activeBtn.classList.add('border-red-600', 'bg-red-50/60', 'text-red-700');
+            const activeSubText = activeBtn ? activeBtn.querySelector('span:last-child') : null;
+            if(activeSubText) activeSubText.classList.replace('text-slate-500', 'text-red-500');
+
+            const data = appData.diary[dayNum];
+            const contentDiv = document.getElementById('diary-content');
+            contentDiv.className = "bg-[#faf6eb] border-2 border-[#b8860b] rounded-2xl p-6 sm:p-8 text-left block shadow-inner animate-fade-in";
+            contentDiv.innerHTML = `
+                <h3 class="text-xl sm:text-2xl font-black text-[#800000] mb-4 border-b-2 border-[#b8860b]/30 pb-2">📂 ${data.title}</h3>
+                <div class="text-slate-700 leading-relaxed text-sm sm:text-base editor-content-area">${data.html}</div>
+            `;
+        }
+
+        initApp();
+    </script>
+</body>
+</html>
