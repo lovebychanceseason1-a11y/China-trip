@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My China Trip - 7 Days Memory (Imperial V16)</title>
+    <title>My China Trip - 7 Days Memory (Imperial V17)</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Google Fonts: Noto Sans Thai & Montserrat -->
@@ -126,15 +126,14 @@
                 </div>
             </section>
 
-            <!-- 1.1 DIARY PAGE (ปรับปรุงปุ่มให้โหลดข้อความสั้นด้านล่างแบบไดนามิกขยับตาม Editor) -->
+            <!-- 1.1 DIARY PAGE -->
             <section id="page-diary" class="page-section hidden">
                 <div class="mb-6">
                     <button onclick="showPage('home')" class="text-xs text-slate-500 hover:text-red-700 mb-2 inline-block">← กลับหน้าแรก</button>
                     <h2 class="text-2xl sm:text-3xl font-black text-[#800000]">ไดอารี่ของฉัน <span class="text-red-600 text-lg sm:text-xl font-normal">(7 วัน)</span></h2>
                 </div>
-                <!-- แถวปุ่มที่จะถูกเรนเดอร์ข้อความสั้นใต้ปุ่มด้วยคำสั่ง JavaScript ซิสเต็ม -->
                 <div id="diary-buttons-row" class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-2.5 mb-8">
-                    <!-- รายชื่อปุ่ม Day 1-7 จะมาฉายโชว์ที่นี่พร้อมข้อความสั้นที่คุณทูต้าแก้ไขล่าสุด -->
+                    <!-- ปุ่มกด Day 1-7 ถูกเรนเดอร์โดย JavaScript อัตโนมัติ -->
                 </div>
                 <div id="diary-content" class="bg-[#fcfaf2] border-2 border-[#b8860b] rounded-2xl p-6 sm:p-8 shadow-inner text-center text-slate-400 min-h-[320px] flex flex-col justify-center items-center">
                     <p>💡 กรุณาเลือก "Day" ด้านบนเพื่ออ่านบันทึกความทรงจำและภาพประกอบการทัศนศึกษา</p>
@@ -163,7 +162,7 @@
                                 <span>🔴 เซี่ยงไฮ้ (Shanghai)</span>
                                 <span class="text-xs text-[#b8860b] font-bold">เปิดดูข้อมูล →</span>
                             </h3>
-                            <p class="text-[11px] text-slate-500 font-light">เมืองท่าทางเศรษฐกิจ นวัตกรรม และความทันสมัยระดับโลก</p>
+                            <p class="text-[11px] text-slate-500 font-light">เมืองท่าทาง経済 นวัตกรรม และความทันสมัยระดับโลก</p>
                         </div>
                         <div onclick="selectPlace('hangzhou')" class="cursor-pointer bg-[#fcfaf2] border-2 border-[#b8860b]/30 rounded-xl p-5 hover:border-red-600 hover:bg-[#fffdf7] transition shadow-sm" id="zone-hangzhou">
                             <h3 class="font-black text-[#800000] text-base mb-1 flex justify-between items-center">
@@ -224,7 +223,7 @@
                 </div>
             </section>
 
-            <!-- 1.5 EDITOR PAGE (เพิ่มช่องปรับแต่งข้อความสั้นใต้ปุ่มในหมวดที่ 2) -->
+            <!-- 1.5 EDITOR PAGE (ซ่อมแซมบั๊กกล่องพิมพ์หลุดเป็นตัวหนังสือเรียบร้อย 100%) -->
             <section id="page-editor" class="page-section hidden">
                 <div class="mb-6 flex justify-between items-center border-b border-[#b8860b]/30 pb-4">
                     <div>
@@ -251,7 +250,7 @@
                         </div>
                     </div>
 
-                    <!-- 2. แก้ไขไดอารี่รายวัน & ข้อความใต้ปุ่มประจำวัน (เพิ่มช่องกรอกซับไตเติล) -->
+                    <!-- 2. แก้ไขไดอารี่รายวัน & ข้อความใต้ปุ่มประจำวัน -->
                     <div class="bg-white border border-[#b8860b]/40 rounded-xl p-5 shadow-sm">
                         <h3 class="font-black text-sm mb-3 text-red-700 border-b pb-1.5">2. แก้ไขไดอารี่รายวัน & ข้อความย่อใต้ปุ่มวันประจำสัปดาห์</h3>
                         <div class="mb-3">
@@ -267,7 +266,8 @@
                             </div>
                             <div>
                                 <label class="block text-[11px] font-bold text-slate-500 mb-1">✏️ ข้อความย่อใต้ปุ่มวัน (ตัวหนังสือเล็ก ๆ ด้านล่างปุ่ม Day บนหน้าเว็บ)</label>
-                                <input type="text" id="edit-diary-subtitle" class="w-full p-2 border rounded-lg outline-none bg-[#fffdfa] placeholder="กรอกข้อความสั้น เช่น เดินทางสู่เซี่ยงไฮ้...">
+                                <!-- ซ่อมแซมจุดเติมเครื่องหมายคำพูดปิดท้ายคลาสเรียบร้อย ช่องพิมพ์กลับมาสวยงามถาวร -->
+                                <input type="text" id="edit-diary-subtitle" class="w-full p-2 border rounded-lg outline-none bg-[#fffdfa]" placeholder="กรอกข้อความสั้น เช่น เดินทางสู่เซี่ยงไฮ้...">
                             </div>
                             <div>
                                 <div class="mb-2 p-2 bg-slate-50 border rounded-lg flex items-center gap-2">
@@ -341,7 +341,7 @@
 
     </div>
 
-    <!-- JAVASCRIPT SYSTEM LOGIC V16 -->
+    <!-- JAVASCRIPT SYSTEM LOGIC V17 -->
     <script>
         let isAdminAuthenticated = false;
 
@@ -368,7 +368,6 @@
         if (!appData.places) appData.places = defaultPlacesText;
         if (!appData.media) appData.media = { images: [], videos: [] };
         
-        // ตรวจเช็คหากฐานข้อมูลเวอร์ชันเก่าไม่มีตัวแปรซับไตเติลปุ่ม ให้สร้างเผื่อไว้
         const defaultSubtitles = ["เดินทางสู่เซี่ยงไฮ้", "นวัตกรรม AI หางโจว", "โรงเรียนประถมไอที", "ทะเลสาบซีหู", "ซานโตรินีจีน", "เมืองโบราณต้าหลี่", "สวนกุยหู & วัดหยวนทง"];
         for(let i=1; i<=7; i++) {
             if(!appData.diary[i].subtitle) appData.diary[i].subtitle = defaultSubtitles[i-1];
@@ -390,7 +389,6 @@
         }
 
         function initApp() {
-            // โหลดหน้าโปรไฟล์ผู้สร้าง
             if (appData.profile.avatar) {
                 document.getElementById('about-avatar').innerHTML = `<img src="${appData.profile.avatar}" class="w-full h-full object-cover">`;
             } else {
@@ -407,7 +405,6 @@
             document.getElementById('edit-ig').value = appData.profile.ig;
             document.getElementById('edit-avatar-url').value = appData.profile.avatar;
 
-            // โหลดข้อมูลคลังรูปภาพมีเดีย
             const imgContainer = document.getElementById('media-images-container');
             if (imgContainer) {
                 imgContainer.innerHTML = '';
@@ -424,7 +421,6 @@
                 }
             }
 
-            // โหลดข้อมูลคลังวิดีโอมีเดีย
             const videoContainer = document.getElementById('media-video-container');
             if (videoContainer) {
                 videoContainer.innerHTML = '';
@@ -547,7 +543,6 @@
         function saveAllChanges() {
             if (!isAdminAuthenticated) return;
             
-            // บันทึกโปรไฟล์
             appData.profile.name = document.getElementById('edit-name').value;
             appData.profile.bio = document.getElementById('edit-bio').value;
             appData.profile.email = document.getElementById('edit-email').value;
@@ -555,13 +550,11 @@
             const avatarUrl = document.getElementById('edit-avatar-url').value;
             if(avatarUrl) appData.profile.avatar = avatarUrl;
 
-            // บันทึกเนื้อหาไดอารี่ & คำอธิบายสั้นใต้ปุ่มประจำวัน
             const currentDay = document.getElementById('edit-diary-day').value;
             appData.diary[currentDay].title = document.getElementById('edit-diary-title').value;
             appData.diary[currentDay].html = document.getElementById('edit-diary-rich-text').innerHTML;
             appData.diary[currentDay].subtitle = document.getElementById('edit-diary-subtitle').value;
             
-            // บันทึกข้อมูลเมือง
             const selectEl = document.getElementById('edit-city-select');
             if(selectEl) {
                 const currentCity = selectEl.value;
@@ -571,7 +564,7 @@
             }
 
             localStorage.setItem('china_trip_advanced_data', JSON.stringify(appData));
-            alert('🎉 บันทึกการอัปเดตคำอธิบายใต้ปุ่มประจำวันและไดอารี่สำเร็จเรียบร้อยแล้วครับ!');
+            alert('🎉 แก้ไขบั๊กโครงสร้างสำเร็จ และบันทึกข้อมูลเรียบร้อยแล้ว!');
             initApp();
         }
 
@@ -586,7 +579,7 @@
             document.getElementById(`page-${pageId}`).classList.remove('hidden');
             window.scrollTo({ top: 0, behavior: 'smooth' });
             if(pageId === 'places') selectPlace('shanghai');
-            if(pageId === 'diary') renderDiaryButtons(); // อัปเดตการเรนเดอร์คำอธิบายใต้ปุ่มวันด่วน
+            if(pageId === 'diary') renderDiaryButtons();
             updateAdminUI();
         }
 
